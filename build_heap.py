@@ -23,6 +23,7 @@ def sift_down(data, i):
         data[i], data[min_index] = data[min_index], data[i]
         swaps += sift_down(data, min_index)
     return swaps
+
 def main():
     n = int(input())
     data = list(map(int, input().split()))
