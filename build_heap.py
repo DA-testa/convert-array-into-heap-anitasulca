@@ -5,23 +5,24 @@ def build_heap(data):
     n = len(data)
     swaps = []
     for i in range(n//2, -1, -1):
-        sift_down(i, data, swaps)
+        swaps += sift_down(data, i)
     return swaps
 
-def sift_down(i, data, swaps):
+def sift_down(data, i):
     n = len(data)
+    swaps = []
     min_index = i
-    left_child = 2*i + 1
-    if left_child < n and data[left_child] < data[min_index]:
-        min_index = left_child
-    right_child = 2*i + 2
-    if right_child < n and data[right_child] < data[min_index]:
-        min_index = right_child
+    l = 2*i + 1
+    if l < n and data[l] < data[min_index]:
+        min_index = l
+    r = 2*i + 2
+    if r < n and data[r] < data[min_index]:
+        min_index = r
     if i != min_index:
-        data[i], data[min_index] = data[min_index], data[i]
         swaps.append((i, min_index))
-        sift_down(min_index, data, swaps)
-
+        data[i], data[min_index] = data[min_index], data[i]
+        swaps += sift_down(data, min_index)
+    return swaps
 def main():
     n = int(input())
     data = list(map(int, input().split()))
