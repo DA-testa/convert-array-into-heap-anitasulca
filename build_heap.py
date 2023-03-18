@@ -29,6 +29,19 @@ def main():
         data = list(map(int, input().strip().split()))
         assert len(data) == n
 
+        # Check if array is already a heap
+        is_heap = True
+        for i in range(n // 2):
+            if 2*i+1 < n and data[i] > data[2*i+1]:
+                is_heap = False
+                break
+            if 2*i+2 < n and data[i] > data[2*i+2]:
+                is_heap = False
+                break
+        if is_heap:
+            print(0)
+            return
+
         swaps = build_heap(data)
 
         print(len(swaps))
