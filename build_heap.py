@@ -22,38 +22,48 @@ def build_heap(data):
     return swaps
 
 def main():
-    # Get input from the user
-    mode = input("Enter 'F' to read from a file or 'I' to input manually: ").lower().strip()
-    n = int(input(" "))
-    data = list(map(int, input(" ").split()))
+    # input from keyboard or file
+    data_input = input("Enter data (separated by space): ")
+    input_type = input("Enter input type (I for keyboard, F for file): ")
 
-    # If the mode is file, get the file name and read data from the file
-    if mode == "f":
-        file_name = input("Enter the file name: ").strip()
+    # input validation
+    if input_type == "F":
         try:
-            with open(file_name, "r") as f:
-                n = int(f.readline().strip())
-                data = list(map(int, f.readline().split()))
-        except OSError as e:
-            print(e)
+            with open(data_input, "r") as file:
+                n = int(file.readline())
+                data = list(map(int, file.readline().split()))
+        except:
+            print("Invalid file or file format")
             return
+    elif input_type == "I":
+        try:
+            n = int(data_input.split()[0])
+            data = list(map(int, data_input.split()[1:]))
+            assert len(data) == n
+        except:
+            print("Invalid input format")
+            return
+    else:
+        print("Invalid input type")
+        return
 
-    # Check the length of the input data
-    assert len(data) == n
-
-    # Call the function to assess the data and get all swaps
+    # calls function to assess the data and give back all swaps
     swaps = build_heap(data)
 
-    # Output the number of swaps made, which should be less than 4n
-    print(f"Number of swaps: {len(swaps)}")
+    # output how many swaps were made, 
+    # this number should be less than 4n (less than 4*len(data))
+    assert len(swaps) < 4*len(data)
+    print("Number of swaps: ", len(swaps))
 
-    # Output all swaps
+    # output all swaps
     for i, j in swaps:
         print(i, j)
 
-
 if __name__ == "__main__":
     main()
+
+
+
 
 
 
