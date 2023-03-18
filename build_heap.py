@@ -24,7 +24,7 @@ def sift_down(i, data, swaps):
         sift_down(min_index, data, swaps)
 
 def main():
-    n = int(input())
+    n = int(input().strip())
     data = list(map(int, input().split()))
     assert len(data) == n
 
