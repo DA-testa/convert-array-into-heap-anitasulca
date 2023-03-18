@@ -24,15 +24,19 @@ def sift_down(i, data, swaps):
         sift_down(min_index, data, swaps)
 
 def main():
-    n = int(input())
-    data = list(map(int, input().split()))
-    assert len(data) == n
+    try:
+        n = int(input().strip())
+        data = list(map(int, input().strip().split()))
+        assert len(data) == n
 
-    swaps = build_heap(data)
+        swaps = build_heap(data)
 
-    print(len(swaps))
-    for i, j in swaps:
-        print(i, j)
+        print(len(swaps))
+        for i, j in swaps:
+            print(i, j)
+    except ValueError:
+        print("Invalid input. Please enter a valid integer.")
 
 if __name__ == "__main__":
     main()
+
