@@ -22,34 +22,35 @@ def build_heap(data):
     return swaps
 
 def main():
-    # Prompt user for input method
-    method = input("Enter 'F' to input data from file or 'I' to input data from keyboard: ").strip().lower()
+    # Get input from the user
+    mode = input("Enter 'F' to read from a file or 'I' to input manually: ").lower().strip()
+    n = int(input(" "))
+    data = list(map(int, input(" ").split()))
 
-    if method == 'f':
-        # Prompt user for file name
-        file_name = input("Enter file name: ").strip()
-
+    # If the mode is file, get the file name and read data from the file
+    if mode == "f":
+        file_name = input("Enter the file name: ").strip()
         try:
             with open(file_name, "r") as f:
                 n = int(f.readline().strip())
                 data = list(map(int, f.readline().split()))
-                assert len(data) == n
-                swaps = build_heap(data)
-                print(len(swaps))
-                for i, j in swaps:
-                    print(i, j)
         except OSError as e:
             print(e)
+            return
 
-    elif method == 'i':
-        # Prompt user for n and data
-        n = int(input("Enter n: "))
-        data = list(map(int, input("Enter data: ").split()))
-        assert len(data) == n
-        swaps = build_heap(data)
-        print(len(swaps))
-        for i, j in swaps:
-            print(i, j)
+    # Check the length of the input data
+    assert len(data) == n
+
+    # Call the function to assess the data and get all swaps
+    swaps = build_heap(data)
+
+    # Output the number of swaps made, which should be less than 4n
+    print(f"Number of swaps: {len(swaps)}")
+
+    # Output all swaps
+    for i, j in swaps:
+        print(i, j)
+
 
 if __name__ == "__main__":
     main()
