@@ -2,55 +2,57 @@
 
 def build_heap(data):
     swaps = []
-    n = len(data)
-    # Start from the last non-leaf node and go backwards
-    for i in range(n // 2, -1, -1):
-        sift_down(i, data, swaps)
+    # Starting from the middle and going backwards,
+    # we move down the tree and sift down each node
+    # to turn the array into a min-heap
+    for i in range(len(data)//2, -1, -1):
+        swaps = sift_down(data, i, swaps)
     return swaps
 
-def sift_down(i, data, swaps):
-    # Find the index of the minimum child
+def sift_down(data, i, swaps):
+    # Initialize index i as the minimum element
     min_index = i
-    left_child = 2 * i + 1
+    # Get the index of the left child of node i
+    left_child = 2*i + 1
+    # If left child is smaller than the parent node i, 
+    # update the index of the minimum element to be the left child
     if left_child < len(data) and data[left_child] < data[min_index]:
         min_index = left_child
-    right_child = 2 * i + 2
+    # Get the index of the right child of node i
+    right_child = 2*i + 2
+    # If right child is smaller than the minimum element so far,
+    # update the index of the minimum element to be the right child
     if right_child < len(data) and data[right_child] < data[min_index]:
         min_index = right_child
-    # If the minimum child is different from i, swap and sift down further
+    # If the index of the minimum element has changed,
+    # swap the parent node i with the minimum element
     if i != min_index:
-        swaps.append((i, min_index))
         data[i], data[min_index] = data[min_index], data[i]
-        sift_down(min_index, data, swaps)
+        swaps.append((i, min_index))
+        # Continue sifting down the swapped element to maintain the heap property
+        swaps = sift_down(data, min_index, swaps)
+    return swaps
 
 def main():
-    try:
-        n = int(input().strip())
-        data = list(map(int, input().strip().split()))
-        assert len(data) == n
+    # Input from keyboard
+    n = int(input())
+    data = list(map(int, input().split()))
 
-        # Check if array is already a heap
-        is_heap = True
-        for i in range(n // 2):
-            if 2*i+1 < n and data[i] > data[2*i+1]:
-                is_heap = False
-                break
-            if 2*i+2 < n and data[i] > data[2*i+2]:
-                is_heap = False
-                break
-        if is_heap:
-            print(0)
-            return
+    # Checks if length of data is the same as the said length
+    assert len(data) == n
 
-        swaps = build_heap(data)
+    # Calls function to assess the data 
+    # and give back all swaps
+    swaps = build_heap(data)
 
-        print(len(swaps))
-        for i, j in swaps:
-            print(i, j)
-    except ValueError:
-        print("Invalid input. Please enter a valid integer.")
+    # Outputs how many swaps were made,
+    # this number should be less than 4n (less than 4*len(data))
+    assert len(swaps) <= 4*n
+    print(len(swaps))
+    
+    # Output all swaps
+    for i, j in swaps:
+        print(i, j)
 
 if __name__ == "__main__":
     main()
-
-
