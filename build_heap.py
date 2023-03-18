@@ -22,22 +22,13 @@ def sift_down(i, data, swaps):
         sift_down(min_idx, data, swaps)
 
 def main():
-    # input from keyboard
     n = int(input())
     data = list(map(int, input().split()))
 
-    # checks if length of data is the same as the said length
     assert len(data) == n
 
-    # calls function to assess the data 
-    # and give back all swaps
     swaps = build_heap(data)
 
-    # output how many swaps were made, 
-    # this number should be less than 4n (less than 4*len(data))
-    assert len(swaps) <= 4*n
-
-    # output all swaps
     print(len(swaps))
     for i, j in swaps:
         print(i, j)
