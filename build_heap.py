@@ -1,20 +1,20 @@
 # python3
 
-def sift_down(arr, i, n, swaps):
+def check(arr, i, n, swaps):
     while True:
-        left_child = 2*i + 1
-        right_child = 2*i + 2
-        min_index = i
+        l = 2*i + 1
+        r = 2*i + 2
+        min = i
 
-        if left_child < n and arr[left_child] < arr[min_index]:
-            min_index = left_child
-        if right_child < n and arr[right_child] < arr[min_index]:
-            min_index = right_child
+        if l < n and arr[l] < arr[min]:
+            min = l
+        if r < n and arr[r] < arr[min]:
+            min = r
 
-        if min_index != i:
-            arr[i], arr[min_index] = arr[min_index], arr[i]
-            swaps.append((i, min_index))
-            i = min_index
+        if min != i:
+            arr[i], arr[min] = arr[min], arr[i]
+            swaps.append((i, min))
+            i = min
         else:
             break
 
@@ -24,7 +24,7 @@ def build_heap(arr):
     swaps = []
 
     for i in range(n//2 - 1, -1, -1):
-        sift_down(arr, i, n, swaps)
+        check(arr, i, n, swaps)
 
     return swaps
 
@@ -42,13 +42,12 @@ def read_data_from_file():
             n = int(file.readline().strip())
             data = list(map(int, file.readline().split()))
     except OSError as e:
-        print(f"Error: {e}")
         return None, None
     return n, data
 
 
 def main():
-    # Prompt user to choose input type
+
     input_type = input("Enter 'I' for keyboard input or 'F' for file input: ").strip()
 
     if input_type.lower() == 'i':
@@ -70,7 +69,7 @@ def main():
     assert len(swaps) <= 4*n
     print(len(swaps))
 
-    # Output all swaps
+    
     for i, j in swaps:
         print(i, j)
 
