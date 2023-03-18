@@ -1,66 +1,83 @@
 # python3
 
-def small(data, i, swaps):
-    n = len(data)
-    l = 2*i + 1
-    r = 2*i + 2
-    sm = i
-    if l < n and data[l] < data[sm]:
-        sm = l
-    if r < n and data[r] < data[sm]:
-        sm = r
-    if sm != i:
-        swaps.append((i, sm))
-        data[i], data[sm] = data[sm], data[i]
-        small(data, sm, swaps)
+def sift_down(arr, i, n, swaps):
+    while True:
+        left_child = 2*i + 1
+        right_child = 2*i + 2
+        min_index = i
 
-def build_heap(data):
+        if left_child < n and arr[left_child] < arr[min_index]:
+            min_index = left_child
+        if right_child < n and arr[right_child] < arr[min_index]:
+            min_index = right_child
+
+        if min_index != i:
+            arr[i], arr[min_index] = arr[min_index], arr[i]
+            swaps.append((i, min_index))
+            i = min_index
+        else:
+            break
+
+
+def build_heap(arr):
+    n = len(arr)
     swaps = []
-    n = len(data)
-    for i in range(n//2, -1, -1):
-        small(data, i, swaps)
+
+    for i in range(n//2 - 1, -1, -1):
+        sift_down(arr, i, n, swaps)
+
     return swaps
 
-def main():
-    # input from keyboard or file
-    data_input = input("Enter data (separated by space): ")
-    input_type = input("Enter input type (I for keyboard, F for file): ")
 
-    # input validation
-    if input_type == "F":
-        try:
-            with open(data_input, "r") as file:
-                n = int(file.readline())
-                data = list(map(int, file.readline().split()))
-        except:
-            print("Invalid file or file format")
-            return
-    elif input_type == "I":
-        try:
-            n = int(data_input.split()[0])
-            data = list(map(int, data_input.split()[1:]))
-            assert len(data) == n
-        except:
-            print("Invalid input format")
-            return
+def read_data_from_keyboard():
+    n = int(input())
+    data = list(map(int, input().split()))
+    return n, data
+
+
+def read_data_from_file():
+    file_name = input("Enter file name: ").strip()
+    try:
+        with open("./tests/" + file_name, mode="r") as file:
+            n = int(file.readline().strip())
+            data = list(map(int, file.readline().split()))
+    except OSError as e:
+        print(f"Error: {e}")
+        return None, None
+    return n, data
+
+
+def main():
+    # Prompt user to choose input type
+    input_type = input("Enter 'I' for keyboard input or 'F' for file input: ").strip()
+
+    if input_type.lower() == 'i':
+        n, data = read_data_from_keyboard()
+    elif input_type.lower() == 'f':
+        n, data = read_data_from_file()
     else:
         print("Invalid input type")
         return
 
-    # calls function to assess the data and give back all swaps
+    # Checks if length of data is the same as the said length
+    assert len(data) == n
+    assert len(data) == len(set(data))
+
     swaps = build_heap(data)
 
-    # output how many swaps were made, 
+    # Outputs how many swaps were made,
     # this number should be less than 4n (less than 4*len(data))
-    assert len(swaps) < 4*len(data)
-    print("Number of swaps: ", len(swaps))
+    assert len(swaps) <= 4*n
+    print(len(swaps))
 
-    # output all swaps
+    # Output all swaps
     for i, j in swaps:
         print(i, j)
 
+
 if __name__ == "__main__":
     main()
+
 
 
 
