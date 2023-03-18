@@ -22,9 +22,10 @@ def build_heap(data):
     return swaps
 
 def main():
-    evade = input("Enter 'I' for input from keyboard or 'F' for input from file: ").strip().lower()
-    if evade == "f":
-        file = input("Enter file name: ").strip()
+    inputs = input("Enter 'F' for file input or 'I' for keyboard input: ").strip().lower()
+
+    if inputs == 'f':
+        file = input("Enter the filename: ").strip()
         try:
             with open(file, "r") as f:
                 n = int(f.readline().strip())
@@ -36,18 +37,17 @@ def main():
                     print(i, j)
         except OSError as e:
             print(e)
-    elif evade == "i":
-        n = int(input("Enter the length of the list: "))
-        data = list(map(int, input("Enter the elements of the list separated by space: ").split()))
+    elif inputs == 'i':
+        n = int(input("Enter the number of elements: "))
+        data = list(map(int, input("Enter the elements: ").split()))
         assert len(data) == n
         swaps = build_heap(data)
         print(len(swaps))
         for i, j in swaps:
             print(i, j)
-    else:
-        print("Invalid input. Please enter 'I' or 'F'.")
 
 if __name__ == "__main__":
     main()
+
 
 
