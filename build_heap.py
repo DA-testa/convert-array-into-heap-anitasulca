@@ -1,58 +1,67 @@
 # python3
 
-def build_heap(data):
+def sift_down(arr, i, n, swaps):
+    while 2*i + 1 < n:
+        j = i  # parent
+        l = 2*i + 1  # left child
+        r = 2*i + 2  # right child
+        
+        if arr[l] < arr[j]:
+            j = l
+        if r < n and arr[r] < arr[j]:
+            j = r
+        
+        if i != j:
+            arr[i], arr[j] = arr[j], arr[i]
+            swaps.append((i, j))
+            i = j
+        else:
+            break
+
+
+def build_heap(arr):
+    n = len(arr)
     swaps = []
-    # Starting from the middle and going backwards,
-    # we move down the tree and sift down each node
-    # to turn the array into a min-heap
-    for i in range(len(data)//2, -1, -1):
-        swaps = sift_down(data, i, swaps)
+    
+    for i in range(n//2, -1, -1):
+        sift_down(arr, i, n, swaps)
+        
     return swaps
 
-def sift_down(data, i, swaps):
-    # Initialize index i as the minimum element
-    min_index = i
-    # Get the index of the left child of node i
-    left_child = 2*i + 1
-    # If left child is smaller than the parent node i, 
-    # update the index of the minimum element to be the left child
-    if left_child < len(data) and data[left_child] < data[min_index]:
-        min_index = left_child
-    # Get the index of the right child of node i
-    right_child = 2*i + 2
-    # If right child is smaller than the minimum element so far,
-    # update the index of the minimum element to be the right child
-    if right_child < len(data) and data[right_child] < data[min_index]:
-        min_index = right_child
-    # If the index of the minimum element has changed,
-    # swap the parent node i with the minimum element
-    if i != min_index:
-        data[i], data[min_index] = data[min_index], data[i]
-        swaps.append((i, min_index))
-        # Continue sifting down the swapped element to maintain the heap property
-        swaps = sift_down(data, min_index, swaps)
-    return swaps
 
 def main():
-    # Input from keyboard
-    n = int(input())
-    data = list(map(int, input().split()))
+    input_type = input("Enter I for keyboard input or F for file input: ").strip()
 
-    # Checks if length of data is the same as the said length
-    assert len(data) == n
+    if input_type.lower() == 'i':
+        n = int(input())
+        arr = list(map(int, input().split()))
 
-    # Calls function to assess the data 
-    # and give back all swaps
-    swaps = build_heap(data)
+    elif input_type.lower() == 'f':
+        file_name = input("Enter file name: ").strip()
+        try:
+                file_name = open("./tests/" + file_name, mode = "r")
+                n = int(file_name.readline().strip())
+                arr = list(map(int, file_name.readline().split()))
 
-    # Outputs how many swaps were made,
-    # this number should be less than 4n (less than 4*len(data))
-    assert len(swaps) <= 4*n
+        except OSError as e:
+            print(f"Error: {e}")
+            return
+        
+    else:
+        print("Invalid input type")
+        return
+
+    assert len(arr) == n
+    assert len(arr) == len(set(arr))
+
+    swaps = build_heap(arr)
+
     print(len(swaps))
-    
-    # Output all swaps
+    assert len(swaps) <= 4 * n
+
     for i, j in swaps:
         print(i, j)
+
 
 if __name__ == "__main__":
     main()
