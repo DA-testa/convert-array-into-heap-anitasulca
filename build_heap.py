@@ -22,12 +22,15 @@ def build_heap(data):
     return swaps
 
 def main():
-    inputs = input("Enter 'F' for file input or 'I' for keyboard input: ").strip().lower()
+    # Prompt user for input method
+    method = input("Enter 'F' to input data from file or 'I' to input data from keyboard: ").strip().lower()
 
-    if inputs == 'f':
-        file = input("Enter the filename: ").strip()
+    if method == 'f':
+        # Prompt user for file name
+        file_name = input("Enter file name: ").strip()
+
         try:
-            with open(file, "r") as f:
+            with open(file_name, "r") as f:
                 n = int(f.readline().strip())
                 data = list(map(int, f.readline().split()))
                 assert len(data) == n
@@ -37,9 +40,11 @@ def main():
                     print(i, j)
         except OSError as e:
             print(e)
-    elif inputs == 'i':
-        n = int(input("Enter the number of elements: "))
-        data = list(map(int, input("Enter the elements: ").split()))
+
+    elif method == 'i':
+        # Prompt user for n and data
+        n = int(input("Enter n: "))
+        data = list(map(int, input("Enter data: ").split()))
         assert len(data) == n
         swaps = build_heap(data)
         print(len(swaps))
